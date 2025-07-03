@@ -105,6 +105,11 @@ return {
               end
             end
           end,
+          ['g'] = function(state)
+            local node = state.tree:get_node()
+            local path = node:get_id()
+            Snacks.picker.grep { dirs = { path } }
+          end,
         },
       },
     },

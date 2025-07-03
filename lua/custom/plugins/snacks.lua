@@ -15,7 +15,9 @@ return {
           enabled = true,
         },
       },
-      lazygit = { enabled = true },
+      lazygit = {
+        enabled = true,
+      },
       input = { enabled = true },
       picker = {
         formatters = {
@@ -29,7 +31,9 @@ return {
           },
         },
       },
-      notifier = { enabled = true },
+      notifier = {
+        enabled = true,
+      },
       quickfile = { enabled = true },
       scope = { enabled = true },
       statuscolumn = { enabled = true },

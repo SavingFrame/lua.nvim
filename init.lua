@@ -391,6 +391,7 @@ require('lazy').setup({
       library = {
         -- Load luvit types when the `vim.uv` word is found
         { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+        { path = 'snacks.nvim', words = { 'Snacks' } },
       },
     },
   },
@@ -608,6 +609,7 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      --
       local servers = {
         -- clangd = {},
         gopls = {
@@ -647,22 +649,20 @@ require('lazy').setup({
             },
           },
         },
-        -- pyright = {},
         basedpyright = {
-
-          capabilities = {
-            textDocument = {
-              documentSymbolProvider = false, -- Disable document symbols
-            },
-          },
           disableOrganizeImports = true,
-          analysis = {
-            diagnosticMode = 'openFilesOnly',
-            stubPath = '/Users/user/.local/share/nvim-rely/lazy/python-type-stubs',
-            typeCheckingMode = 'basic',
-            useLibraryCodeForTypes = true,
-            diagnosticSeverityOverrides = {
-              reportAssignmentType = 'warning',
+          settings = {
+            basedpyright = {
+              analysis = {
+                diagnosticMode = 'openFilesOnly',
+                stubPath = '/Users/user/.local/share/nvim-rely/lazy/python-type-stubs',
+                typeCheckingMode = 'basic',
+                -- typeCheckingMode = false,
+                useLibraryCodeForTypes = true,
+                diagnosticSeverityOverrides = {
+                  reportAssignmentType = 'warning',
+                },
+              },
             },
           },
         },
@@ -671,6 +671,7 @@ require('lazy').setup({
             hoverProvider = false,
           },
         },
+        ty = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -708,6 +709,7 @@ require('lazy').setup({
         },
         dockerls = {},
         docker_compose_language_service = {},
+        templ = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -723,32 +725,55 @@ require('lazy').setup({
       --
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
+
+      ---@type MasonLspconfigSettings
+      ---@diagnostic disable-next-line: missing-fields
+      require('mason-lspconfig').setup {
+        automatic_enable = vim.tbl_keys(servers or {}),
+      }
+
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-      require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            --
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-
-            -- if server_name == 'basedpyright' then
-            --   -- vim.print 'Pyright server.capabilities:'
-            --   -- vim.print(vim.inspect(server.capabilities))
-            -- end
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
+      -- Installed LSPs are configured and enabled automatically with mason-lspconfig
+      -- The loop below is for overriding the default configuration of LSPs with the ones in the servers table
+      for server_name, config in pairs(servers) do
+        vim.lsp.config(server_name, config)
+      end
+      -- require('mason-lspconfig').setup {
+      --   ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+      --   automatic_installation = false,
+      --   handlers = {
+      --     function(server_name)
+      --       local server = servers[server_name] or {}
+      --       -- This handles overriding only values explicitly passed
+      --       -- by the server configuration above. Useful when disabling
+      --       -- certain features of an LSP (for example, turning off formatting for ts_ls)
+      --       --
+      --       server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+      --
+      --       -- if server_name == 'basedpyright' then
+      --       --   -- vim.print 'Pyright server.capabilities:'
+      --       --   -- vim.print(vim.inspect(server.capabilities))
+      --       -- end
+      --       require('lspconfig')[server_name].setup(server)
+      --     end,
+      --   },
+      -- }
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = false }),
+        callback = function(event)
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client.name == 'basedpyright' then
+            -- client.server_capabilities.documentSymbolProvider = false
+            client.server_capabilities.workspaceSymbolProvider = false
+            client.server_capabilities.declarationProvider = false
+          end
+          -- ... rest of your LspAttach callback
+        end,
+      })
     end,
   },
 
@@ -767,7 +792,9 @@ require('lazy').setup({
       },
     },
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
+
+      log_level = vim.log.levels.DEBUG,
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
@@ -786,6 +813,7 @@ require('lazy').setup({
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
         python = { 'ruff_fix', 'ruff_format' },
+        html = { 'prettier' },
         -- python = { 'black' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
@@ -977,7 +1005,16 @@ require('lazy').setup({
         },
       }
 
-      require('mini.pairs').setup()
+      require('mini.pairs').setup {
+        -- skip autopair when next character is one of these
+        skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+        -- skip autopair when the cursor is inside these treesitter nodes
+        skip_ts = { 'string' },
+        -- and there are more closing pairs than opening pairs
+        skip_unbalanced = true,
+        -- better deal with markdown code blocks
+        markdown = true,
+      }
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
@@ -1022,6 +1059,7 @@ require('lazy').setup({
         'gosum',
         'json5',
         'dockerfile',
+        'templ',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
