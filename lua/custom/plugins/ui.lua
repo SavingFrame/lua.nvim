@@ -19,8 +19,8 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {
       options = {
-        -- theme = 'iceberg_dark',
-        theme = 'lackluster',
+        -- theme = 'lackluster',
+        theme = 'kanagawa',
         section_separators = '',
         component_separators = '',
         disabled_filetypes = { -- Filetypes to disable lualine for.
@@ -129,11 +129,27 @@ return {
           },
         },
       }
-      vim.cmd.colorscheme 'lackluster-hack' -- my favorite
-      -- vim.cmd.colorscheme("lackluster-mint")
+      -- vim.cmd.colorscheme 'lackluster-hack' -- my favorite
       --
       vim.api.nvim_set_hl(0, 'WinBar', { fg = '#7a7a7a', bg = '#242424' })
       vim.api.nvim_set_hl(0, 'WinBarNC', { fg = '#7a7a7a', bg = '#242424' })
+    end,
+  },
+  {
+    'rebelot/kanagawa.nvim',
+    init = function()
+      require('kanagawa').setup {
+        colors = {
+          theme = {
+            all = {
+              ui = {
+                bg_gutter = 'none',
+              },
+            },
+          },
+        },
+      }
+      vim.cmd.colorscheme 'kanagawa'
     end,
   },
   {

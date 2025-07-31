@@ -7,34 +7,25 @@ return {
     },
   },
   {
-    'giuxtaposition/blink-cmp-copilot',
+    'fang2hou/blink-copilot',
+    opts = {
+      debounce = 50,
+      max_completions = 2,
+    },
   },
   {
     'saghen/blink.cmp',
     build = 'cargo build --release',
-    dependencies = {
-      {
-        'giuxtaposition/blink-cmp-copilot',
-      },
-    },
+    dependencies = { 'fang2hou/blink-copilot' },
     opts = {
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
         providers = {
           copilot = {
             name = 'copilot',
-            module = 'blink-cmp-copilot',
+            module = 'blink-copilot',
             score_offset = 100,
             async = true,
-            transform_items = function(_, items)
-              local CompletionItemKind = require('blink.cmp.types').CompletionItemKind
-              local kind_idx = #CompletionItemKind + 1
-              CompletionItemKind[kind_idx] = 'Copilot'
-              for _, item in ipairs(items) do
-                item.kind = kind_idx
-              end
-              return items
-            end,
           },
         },
       },

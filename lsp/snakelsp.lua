@@ -3,6 +3,7 @@ return {
 
   cmd = { '/home/archie/Projects/snakelsp/snakelsp' },
   -- cmd = { 'lsp-devtools', 'agent', '--', '/home/archie/Projects/snakelsp/snakelsp' },
+  -- cmd = { 'lspwatcher', 'agent', '/home/archie/Projects/snakelsp/snakelsp' },
   filetypes = { 'python' },
   capabilities = {
     textDocument = {
