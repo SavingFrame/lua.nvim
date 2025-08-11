@@ -41,13 +41,13 @@ return {
     },
     keys = {
       -- Top Pickers & Explorer
-      {
-        '<leader><space>',
-        function()
-          Snacks.picker.smart()
-        end,
-        desc = 'Smart Find Files',
-      },
+      -- {
+      --   '<leader><space>',
+      --   function()
+      --     Snacks.picker.smart()
+      --   end,
+      --   desc = 'Smart Find Files',
+      -- },
       {
         '<leader>,',
         function()
@@ -84,28 +84,28 @@ return {
         end,
         desc = 'Buffers',
       },
-      {
-        '<leader>fc',
-        function()
-          Snacks.picker.files { cwd = vim.fn.stdpath 'config' }
-        end,
-        desc = 'Find Config File',
-      },
-      {
-        '<leader>ff',
-        function()
-          Snacks.picker.files {
-            finder = 'files',
-            format = 'file',
-            hidden = true,
-            ignored = true,
-            follow = false,
-            supports_live = true,
-            -- debug = false,
-          }
-        end,
-        desc = 'Find Files',
-      },
+      -- {
+      --   '<leader>fc',
+      --   function()
+      --     Snacks.picker.files { cwd = vim.fn.stdpath 'config' }
+      --   end,
+      --   desc = 'Find Config File',
+      -- },
+      -- {
+      --   '<leader>ff',
+      --   function()
+      --     Snacks.picker.files {
+      --       finder = 'files',
+      --       format = 'file',
+      --       hidden = true,
+      --       ignored = true,
+      --       follow = false,
+      --       supports_live = true,
+      --       -- debug = false,
+      --     }
+      --   end,
+      --   desc = 'Find Files',
+      -- },
       {
         '<leader>fr',
         function()
@@ -324,6 +324,38 @@ return {
         end,
         desc = 'Visual selection or word',
         mode = { 'n', 'x' },
+      },
+    },
+  },
+  {
+    'dmtrKovalenko/fff.nvim',
+    build = 'cargo build --release',
+    -- or if you are using nixos
+    -- build = "nix run .#release",
+    opts = {
+      -- pass here all the options
+    },
+    keys = {
+      {
+        '<leader><space>', -- try it if you didn't it is a banger keybinding for a picker
+        function()
+          require('fff').find_in_git_root() -- or find_in_git_root() if you only want git files
+        end,
+        desc = 'Open file picker',
+      },
+      {
+        '<leader>fc',
+        function()
+          require('fff').find_files_in_dir(vim.fn.stdpath 'config')
+        end,
+        desc = 'Find Config File',
+      },
+      {
+        '<leader>ff',
+        function()
+          require('fff').find_files()
+        end,
+        desc = 'Find Files',
       },
     },
   },
