@@ -91,21 +91,21 @@ return {
       --   end,
       --   desc = 'Find Config File',
       -- },
-      -- {
-      --   '<leader>ff',
-      --   function()
-      --     Snacks.picker.files {
-      --       finder = 'files',
-      --       format = 'file',
-      --       hidden = true,
-      --       ignored = true,
-      --       follow = false,
-      --       supports_live = true,
-      --       -- debug = false,
-      --     }
-      --   end,
-      --   desc = 'Find Files',
-      -- },
+      {
+        '<leader>ff',
+        function()
+          Snacks.picker.files {
+            finder = 'files',
+            format = 'file',
+            hidden = true,
+            ignored = true,
+            follow = false,
+            supports_live = true,
+            -- debug = false,
+          }
+        end,
+        desc = 'Find Files',
+      },
       {
         '<leader>fr',
         function()
@@ -350,13 +350,13 @@ return {
         end,
         desc = 'Find Config File',
       },
-      {
-        '<leader>ff',
-        function()
-          require('fff').find_files()
-        end,
-        desc = 'Find Files',
-      },
+      -- {
+      --   '<leader>ff',
+      --   function()
+      --     require('fff').find_files()
+      --   end,
+      --   desc = 'Find Files',
+      -- },
     },
   },
 }

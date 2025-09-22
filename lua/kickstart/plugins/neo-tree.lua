@@ -108,7 +108,7 @@ return {
           ['g'] = function(state)
             local node = state.tree:get_node()
             local path = node:get_id()
-            Snacks.picker.grep { dirs = { path } }
+            Snacks.picker.grep { dirs = { path }, hidden = true, ignored = true }
           end,
         },
       },

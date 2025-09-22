@@ -710,6 +710,7 @@ require('lazy').setup({
         dockerls = {},
         docker_compose_language_service = {},
         templ = {},
+        terraformls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -769,7 +770,11 @@ require('lazy').setup({
           if client.name == 'basedpyright' then
             -- client.server_capabilities.documentSymbolProvider = false
             client.server_capabilities.workspaceSymbolProvider = false
-            client.server_capabilities.declarationProvider = false
+            -- client.server_capabilities.declarationProvider = false
+            -- client.server_capabilities.definitionProvider = false
+            -- client.server_capabilities.typeDefinitionProvider = false
+            -- client.server_capabilities.implementationProvider = false
+            -- client.server_capabilities.referencesProvider = false
           end
           -- ... rest of your LspAttach callback
         end,
@@ -1131,7 +1136,7 @@ require('lazy').setup({
   checker = { enabled = true },
 })
 
-vim.lsp.enable 'snakelsp'
+-- vim.lsp.enable 'snakelsp'
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 -- vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"

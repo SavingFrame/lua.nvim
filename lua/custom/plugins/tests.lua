@@ -1,7 +1,7 @@
 return {
   {
     'nvim-neotest/neotest',
-    dependencies = { 'nvim-neotest/nvim-nio', 'folke/trouble.nvim', 'nvim-neotest/neotest-python' },
+    dependencies = { 'nvim-neotest/nvim-nio', 'folke/trouble.nvim', 'nvim-neotest/neotest-python', 'fredrikaverpil/neotest-golang' },
     opts = {
       -- Can be a list of adapters like what neotest expects,
       -- or a list of adapter names,
@@ -19,6 +19,7 @@ return {
           -- runner = "pytest",
           -- python = ".venv/bin/python",
         },
+        ['neotest-golang'] = {},
       },
       -- Example for loading neotest-golang with a custom config
       -- adapters = {
