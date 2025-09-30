@@ -955,7 +955,7 @@ require('lazy').setup({
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
+    'nvim-mini/mini.nvim',
     keys = function(_, keys)
       -- Populate the keys based on the user's options
       local mappings = {
@@ -1010,16 +1010,16 @@ require('lazy').setup({
         },
       }
 
-      require('mini.pairs').setup {
-        -- skip autopair when next character is one of these
-        skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
-        -- skip autopair when the cursor is inside these treesitter nodes
-        skip_ts = { 'string' },
-        -- and there are more closing pairs than opening pairs
-        skip_unbalanced = true,
-        -- better deal with markdown code blocks
-        markdown = true,
-      }
+      -- require('mini.pairs').setup {
+      --   -- skip autopair when next character is one of these
+      --   skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+      --   -- skip autopair when the cursor is inside these treesitter nodes
+      --   skip_ts = { 'string' },
+      --   -- and there are more closing pairs than opening pairs
+      --   skip_unbalanced = true,
+      --   -- better deal with markdown code blocks
+      --   markdown = true,
+      -- }
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
@@ -1098,7 +1098,7 @@ require('lazy').setup({
   require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
