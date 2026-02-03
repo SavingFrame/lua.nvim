@@ -6,50 +6,120 @@ return {
   },
   {
     'nvim-treesitter/nvim-treesitter',
-    opts = {
+    branch = 'main',
+    lazy = false,
+    build = ':TSUpdate',
+    init = function()
+      require('nvim-treesitter').setup {
+        -- Directory to install parsers and queries to (prepended to `runtimepath` to have priority)
+        install_dir = vim.fn.stdpath 'data' .. '/site',
+      }
+      local languages = { 'c', 'lua', 'rust', 'python', 'javascript', 'typescript', 'html', 'css', 'json', 'bash', 'go', 'regex' }
+      -- replicate `ensure_installed`, runs asynchronously, skips existing languages
+      require('nvim-treesitter').install(languages)
 
-      textobjects = {
-        move = {
-          enable = true,
-          goto_next_start = { [']f'] = '@function.outer', [']c'] = '@class.outer', [']a'] = '@parameter.inner' },
-          goto_next_end = { [']F'] = '@function.outer', [']C'] = '@class.outer', [']A'] = '@parameter.inner' },
-          goto_previous_start = { ['[f'] = '@function.outer', ['[c'] = '@class.outer', ['[a'] = '@parameter.inner' },
-          goto_previous_end = { ['[F'] = '@function.outer', ['[C'] = '@class.outer', ['[A'] = '@parameter.inner' },
-        },
-      },
-    },
+      vim.api.nvim_create_autocmd('FileType', {
+        group = vim.api.nvim_create_augroup('treesitter.setup', {}),
+        callback = function(args)
+          local buf = args.buf
+          local filetype = args.match
+
+          -- you need some mechanism to avoid running on buffers that do not
+          -- correspond to a language (like oil.nvim buffers), this implementation
+          -- checks if a parser exists for the current language
+          local language = vim.treesitter.language.get_lang(filetype) or filetype
+          if not vim.treesitter.language.add(language) then
+            return
+          end
+
+          -- replicate `fold = { enable = true }`
+          vim.wo.foldmethod = 'expr'
+          vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+          -- replicate `highlight = { enable = true }`
+          vim.treesitter.start(buf, language)
+
+          -- replicate `indent = { enable = true }`
+          vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
+    end,
   },
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
     event = 'VeryLazy',
+    branch = 'main',
     enabled = true,
-    config = function()
-      -- If treesitter is already loaded, we need to run config again for textobjects
-      -- if LazyVim.is_loaded 'nvim-treesitter' then
-      --   local opts = LazyVim.opts 'nvim-treesitter'
-      --   require('nvim-treesitter.configs').setup { textobjects = opts.textobjects }
-      -- end
+    init = function()
+      require('nvim-treesitter-textobjects').setup {
+        select = {
+          -- Automatically jump forward to textobj, similar to targets.vim
+          lookahead = true,
+          -- You can choose the select mode (default is charwise 'v')
+          --
+          -- Can also be a function which gets passed a table with the keys
+          -- * query_string: eg '@function.inner'
+          -- * method: eg 'v' or 'o'
+          -- and should return the mode ('v', 'V', or '<c-v>') or a table
+          -- mapping query_strings to modes.
+          selection_modes = {
+            ['@parameter.outer'] = 'v', -- charwise
+            ['@function.outer'] = 'V', -- linewise
+            -- ['@class.outer'] = '<c-v>', -- blockwise
+          },
+          -- If you set this to `true` (default is `false`) then any textobject is
+          -- extended to include preceding or succeeding whitespace. Succeeding
+          -- whitespace has priority in order to act similarly to eg the built-in
+          -- `ap`.
+          --
+          -- Can also be a function which gets passed a table with the keys
+          -- * query_string: eg '@function.inner'
+          -- * selection_mode: eg 'v'
+          -- and should return true of false
+          include_surrounding_whitespace = false,
+        },
+      }
 
-      -- When in diff mode, we want to use the default
-      -- vim text objects c & C instead of the treesitter ones.
-      local move = require 'nvim-treesitter.textobjects.move' ---@type table<string,fun(...)>
-      local configs = require 'nvim-treesitter.configs'
-      for name, fn in pairs(move) do
-        if name:find 'goto' == 1 then
-          move[name] = function(q, ...)
-            if vim.wo.diff then
-              local config = configs.get_module('textobjects.move')[name] ---@type table<string,string>
-              for key, query in pairs(config or {}) do
-                if q == query and key:find '[%]%[][cC]' then
-                  vim.cmd('normal! ' .. key)
-                  return
-                end
-              end
-            end
-            return fn(q, ...)
-          end
-        end
-      end
+      vim.keymap.set({ 'n', 'x', 'o' }, ']f', function()
+        require('nvim-treesitter-textobjects.move').goto_next_start('@function.outer', 'textobjects')
+      end)
+      vim.keymap.set({ 'n', 'x', 'o' }, '[f', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_start('@function.outer', 'textobjects')
+      end)
+      vim.keymap.set({ 'n', 'x', 'o' }, ']F', function()
+        require('nvim-treesitter-textobjects.move').goto_next_end('@function.outer', 'textobjects')
+      end)
+      vim.keymap.set({ 'n', 'x', 'o' }, '[F', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_end('@function.outer', 'textobjects')
+      end)
+
+      -- Class movements
+      vim.keymap.set({ 'n', 'x', 'o' }, ']c', function()
+        require('nvim-treesitter-textobjects.move').goto_next_start('@class.outer', 'textobjects')
+      end)
+      vim.keymap.set({ 'n', 'x', 'o' }, '[c', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_start('@class.outer', 'textobjects')
+      end)
+      vim.keymap.set({ 'n', 'x', 'o' }, ']C', function()
+        require('nvim-treesitter-textobjects.move').goto_next_end('@class.outer', 'textobjects')
+      end)
+      vim.keymap.set({ 'n', 'x', 'o' }, '[C', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_end('@class.outer', 'textobjects')
+      end)
+
+      -- Parameter movements
+      vim.keymap.set({ 'n', 'x', 'o' }, ']a', function()
+        require('nvim-treesitter-textobjects.move').goto_next_start('@parameter.inner', 'textobjects')
+      end)
+      vim.keymap.set({ 'n', 'x', 'o' }, '[a', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_start('@parameter.inner', 'textobjects')
+      end)
+      vim.keymap.set({ 'n', 'x', 'o' }, ']A', function()
+        require('nvim-treesitter-textobjects.move').goto_next_end('@parameter.inner', 'textobjects')
+      end)
+      vim.keymap.set({ 'n', 'x', 'o' }, '[A', function()
+        require('nvim-treesitter-textobjects.move').goto_previous_end('@parameter.inner', 'textobjects')
+      end)
     end,
   },
 }

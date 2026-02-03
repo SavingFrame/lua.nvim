@@ -19,8 +19,8 @@ return {
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {
       options = {
-        -- theme = 'lackluster',
-        theme = 'kanagawa',
+        -- theme = 'kanagawa',
+        theme = 'ayu',
         section_separators = '',
         component_separators = '',
         disabled_filetypes = { -- Filetypes to disable lualine for.
@@ -42,7 +42,7 @@ return {
             -- 3: Absolute path, with tilde as the home directory
             -- 4: Filename and parent dir, with tilde as the home directory
 
-            shorting_target = 120, -- Shortens path to leave 40 spaces in the window
+            shorting_target = 20, -- Shortens path to leave 40 spaces in the window
             -- for other components. (terrible name, any suggestions?)
             symbols = {
               modified = '[+]', -- Text to show when the file is modified.
@@ -68,7 +68,36 @@ return {
             -- 3: Absolute path, with tilde as the home directory
             -- 4: Filename and parent dir, with tilde as the home directory
 
-            shorting_target = 120, -- Shortens path to leave 40 spaces in the window
+            shorting_target = 20, -- Shortens path to leave 40 spaces in the window
+            -- for other components. (terrible name, any suggestions?)
+            symbols = {
+              modified = '[+]', -- Text to show when the file is modified.
+              readonly = '[-]', -- Text to show when the file is non-modifiable or readonly.
+              unnamed = '[No Name]', -- Text to show for unnamed buffers.
+              newfile = '[New]', -- Text to show for newly created file before first write
+            },
+          },
+          {
+            'navic',
+            color_correction = nil,
+            navic_opts = nil,
+          },
+        },
+      },
+
+      inactive_winbar = {
+        lualine_c = {
+          {
+            'filename',
+            file_status = true, -- Displays file status (readonly status, modified status)
+            newfile_status = false, -- Display new file status (new file means no write after created)
+            path = 1, -- 0: Just the filename
+            -- 1: Relative path
+            -- 2: Absolute path
+            -- 3: Absolute path, with tilde as the home directory
+            -- 4: Filename and parent dir, with tilde as the home directory
+
+            shorting_target = 20, -- Shortens path to leave 40 spaces in the window
             -- for other components. (terrible name, any suggestions?)
             symbols = {
               modified = '[+]', -- Text to show when the file is modified.
@@ -149,9 +178,25 @@ return {
           },
         },
       }
-      vim.cmd.colorscheme 'kanagawa'
+      -- vim.cmd.colorscheme 'kanagawa'
     end,
   },
+  {
+    'Shatur/neovim-ayu',
+    init = function()
+      local colors = require 'ayu.colors'
+      colors.generate(false)
+      require('ayu').setup {
+        mirage = false, -- Set to `true` to use `mirage` variant instead of `dark` for dark background.
+        terminal = true, -- Set to `false` to let terminal manage its own colors.
+        overrides = {
+          BlinkCmpGhostText = { fg = colors.fg },
+        }, -- A dictionary of group names, each associated with a dictionary of parameters (`bg`, `fg`, `sp` and `style`) and colors in hex.
+      }
+      vim.cmd.colorscheme 'ayu'
+    end,
+  },
+
   {
     'kazhala/close-buffers.nvim',
     opts = {

@@ -649,29 +649,30 @@ require('lazy').setup({
             },
           },
         },
-        basedpyright = {
-          disableOrganizeImports = true,
-          settings = {
-            basedpyright = {
-              analysis = {
-                diagnosticMode = 'openFilesOnly',
-                stubPath = '/Users/user/.local/share/nvim-rely/lazy/python-type-stubs',
-                typeCheckingMode = 'basic',
-                -- typeCheckingMode = false,
-                useLibraryCodeForTypes = true,
-                diagnosticSeverityOverrides = {
-                  reportAssignmentType = 'warning',
-                },
-              },
-            },
-          },
-        },
+        qmlls = {},
+        -- basedpyright = {
+        --   disableOrganizeImports = true,
+        --   settings = {
+        --     basedpyright = {
+        --       analysis = {
+        --         diagnosticMode = 'openFilesOnly',
+        --         stubPath = '/Users/user/.local/share/nvim-rely/lazy/python-type-stubs',
+        --         typeCheckingMode = 'basic',
+        --         -- typeCheckingMode = false,
+        --         useLibraryCodeForTypes = true,
+        --         diagnosticSeverityOverrides = {
+        --           reportAssignmentType = 'warning',
+        --         },
+        --       },
+        --     },
+        --   },
+        -- },
         ruff = {
           capabilities = {
             hoverProvider = false,
           },
         },
-        -- ty = {},
+        ty = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -711,6 +712,7 @@ require('lazy').setup({
         docker_compose_language_service = {},
         templ = {},
         terraformls = {},
+        copilot = { enabled = true },
       }
 
       -- Ensure the servers and tools above are installed
@@ -1041,8 +1043,9 @@ require('lazy').setup({
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    branch = 'main',
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = {
@@ -1065,6 +1068,8 @@ require('lazy').setup({
         'json5',
         'dockerfile',
         'templ',
+        'rust',
+        'ron',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,

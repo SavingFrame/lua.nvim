@@ -68,6 +68,16 @@ return {
     keys = {
       { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
       { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+			{"<A-CR>", mode = {"n", "x", "o"}, function ()
+				require("flash").treesitter({
+					label = { before = false, after = false, style = "right_align" },
+					actions = {
+						["<A-CR>"] = "next",
+						["<BS>"] = "prev",
+					}
+				})
+			end, { desc = "Treesitter incremental selection" }
+			},
       { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
       { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
@@ -177,5 +187,20 @@ return {
         desc = 'Quickfix List (Trouble)',
       },
     },
+  },
+  {
+    's1n7ax/nvim-window-picker',
+    name = 'window-picker',
+    event = 'VeryLazy',
+    version = '2.*',
+    config = function()
+      require('window-picker').setup {
+        hint = 'floating-big-letter',
+        show_prompt = true,
+        filter_rules = {
+          include_current_win = true,
+        },
+      }
+    end,
   },
 }

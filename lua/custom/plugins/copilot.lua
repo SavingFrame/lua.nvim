@@ -1,6 +1,7 @@
 return {
   {
     'zbirenbaum/copilot.lua',
+    enabled = false,
     opts = {
       suggestion = { enabled = false },
       panel = { enabled = false },
@@ -16,7 +17,7 @@ return {
   {
     'saghen/blink.cmp',
     build = 'cargo build --release',
-    dependencies = { 'fang2hou/blink-copilot' },
+    dependencies = { 'fang2hou/blink-copilot', 'folke/sidekick.nvim' },
     opts = {
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
@@ -65,39 +66,18 @@ return {
           TypeParameter = '󰬛',
         },
       },
+
+      keymap = {
+        ['<C-y>'] = {
+          function() -- sidekick next edit suggestion
+            return require('sidekick').nes_jump_or_apply()
+          end,
+          'select_and_accept',
+          'fallback',
+        },
+      },
     },
   },
-  -- {
-  --   'CopilotC-Nvim/CopilotChat.nvim',
-  --   dependencies = {
-  --     { 'github/copilot.vim' }, -- or zbirenbaum/copilot.lua
-  --     { 'nvim-lua/plenary.nvim', branch = 'master' }, -- for curl, log and async functions
-  --   },
-  --   build = 'make tiktoken', -- Only on MacOS or Linux
-  --   keys = {
-  --     { '<leader>a', '', desc = '+ai', mode = { 'n', 'v' } },
-  --     {
-  --       '<leader>aa',
-  --       function()
-  --         return require('CopilotChat').toggle()
-  --       end,
-  --       desc = 'Toggle (CopilotChat)',
-  --       mode = { 'n', 'v' },
-  --     },
-  --     {
-  --       '<leader>ap',
-  --       function()
-  --         require('CopilotChat').select_prompt()
-  --       end,
-  --       desc = 'Prompt Actions (CopilotChat)',
-  --       mode = { 'n', 'v' },
-  --     },
-  --   },
-  --   opts = {
-  --     -- See Configuration section for options
-  --   },
-  --   -- See Commands section for default commands if you want to lazy load on them
-  -- },
 
   {
     'NickvanDyke/opencode.nvim',
@@ -112,8 +92,8 @@ return {
   -- stylua: ignore
   keys = {
     { '<leader>at', function() require('opencode').toggle() end, desc = 'Toggle embedded opencode', },
-    { '<leader>aa', function() require('opencode').ask() end, desc = 'Ask opencode', mode = 'n', },
-    { '<leader>aa', function() require('opencode').ask('@selection: ') end, desc = 'Ask opencode about selection', mode = 'v', },
+    { '<leader>aa', function () require("opencode").ask("@this: ", { submit = false }) end, desc = 'Ask opencode', mode = 'n', },
+    { '<leader>aa', function() require('opencode').ask('@this: ', {submit = false}) end, desc = 'Ask opencode about selection', mode = 'v', },
     { '<leader>ap', function() require('opencode').select_prompt() end, desc = 'Select prompt', mode = { 'n', 'v', }, },
     { '<leader>an', function() require('opencode').command('session_new') end, desc = 'New session', },
     { '<leader>ay', function() require('opencode').command('messages_copy') end, desc = 'Copy last message', },
@@ -121,4 +101,73 @@ return {
     { '<S-C-d>',    function() require('opencode').command('messages_half_page_down') end, desc = 'Scroll messages down', },
   },
   },
+  --
+  {
+    'folke/sidekick.nvim',
+    opts = {
+      -- add any options here
+      cli = {
+        mux = {
+          backend = 'tmux',
+          enabled = true,
+        },
+      },
+    },
+    keys = {
+      {
+        '<c-y>',
+        function()
+          -- if there is a next edit, jump to it, otherwise apply it if any
+          if not require('sidekick').nes_jump_or_apply() then
+            return '<Tab>' -- fallback to normal tab
+          end
+        end,
+        expr = true,
+        desc = 'Goto/Apply Next Edit Suggestion',
+      },
+      -- {
+      --   '<c-.>',
+      --   function()
+      --     require('sidekick.cli').focus()
+      --   end,
+      --   desc = 'Sidekick Switch Focus',
+      --   mode = { 'n', 'v' },
+      -- },
+      -- {
+      --   '<leader>aa',
+      --   function()
+      --     require('sidekick.cli').toggle { focus = true }
+      --   end,
+      --   desc = 'Sidekick Toggle CLI',
+      --   mode = { 'n', 'v' },
+      -- },
+      -- {
+      --   '<leader>ap',
+      --   function()
+      --     require('sidekick.cli').select_prompt()
+      --   end,
+      --   desc = 'Sidekick Ask Prompt',
+      --   mode = { 'n', 'v' },
+      -- },
+    },
+  },
+  -- {
+  --   'saghen/blink.cmp',
+  --   ---@module 'blink.cmp'
+  --   ---@type blink.cmp.Config
+  --   opts = {
+  --     keymap = {
+  --       ['<Tab>'] = {
+  --         'snippet_forward',
+  --         function() -- sidekick next edit suggestion
+  --           return require('sidekick').nes_jump_or_apply()
+  --         end,
+  --         function() -- if you are using Neovim's native inline completions
+  --           return vim.lsp.inline_completion.get()
+  --         end,
+  --         'fallback',
+  --       },
+  --     },
+  --   },
+  -- },
 }
