@@ -138,7 +138,7 @@ require('lualine').setup({
     section_separators = '',
     component_separators = '',
     -- theme = "rose-pine",
-    disabled_filetypes = {         -- Filetypes to disable lualine for.
+    disabled_filetypes = { -- Filetypes to disable lualine for.
       statusline = { 'neo-tree' }, -- only ignores the ft for statusline.
     },
   },
@@ -148,17 +148,17 @@ require('lualine').setup({
     lualine_c = {
       {
         'filename',
-        file_status = true,     -- Displays file status (readonly status, modified status)
+        file_status = true, -- Displays file status (readonly status, modified status)
         newfile_status = false, -- Display new file status (new file means no write after created)
         path = 1,
 
         shorting_target = 20, -- Shortens path to leave 40 spaces in the window
         -- for other components. (terrible name, any suggestions?)
         symbols = {
-          modified = '[+]',      -- Text to show when the file is modified.
-          readonly = '[-]',      -- Text to show when the file is non-modifiable or readonly.
+          modified = '[+]', -- Text to show when the file is modified.
+          readonly = '[-]', -- Text to show when the file is non-modifiable or readonly.
           unnamed = '[No Name]', -- Text to show for unnamed buffers.
-          newfile = '[New]',     -- Text to show for newly created file before first write
+          newfile = '[New]', -- Text to show for newly created file before first write
         },
       },
     },
@@ -170,17 +170,17 @@ require('lualine').setup({
     lualine_c = {
       {
         'filename',
-        file_status = true,     -- Displays file status (readonly status, modified status)
+        file_status = true, -- Displays file status (readonly status, modified status)
         newfile_status = false, -- Display new file status (new file means no write after created)
         path = 1,
 
         shorting_target = 20, -- Shortens path to leave 40 spaces in the window
         -- for other components. (terrible name, any suggestions?)
         symbols = {
-          modified = '[+]',      -- Text to show when the file is modified.
-          readonly = '[-]',      -- Text to show when the file is non-modifiable or readonly.
+          modified = '[+]', -- Text to show when the file is modified.
+          readonly = '[-]', -- Text to show when the file is non-modifiable or readonly.
           unnamed = '[No Name]', -- Text to show for unnamed buffers.
-          newfile = '[New]',     -- Text to show for newly created file before first write
+          newfile = '[New]', -- Text to show for newly created file before first write
         },
       },
       {
@@ -195,16 +195,16 @@ require('lualine').setup({
     lualine_c = {
       {
         'filename',
-        file_status = true,     -- Displays file status (readonly status, modified status)
+        file_status = true, -- Displays file status (readonly status, modified status)
         newfile_status = false, -- Display new file status (new file means no write after created)
         path = 1,
-        shorting_target = 20,   -- Shortens path to leave 40 spaces in the window
+        shorting_target = 20, -- Shortens path to leave 40 spaces in the window
         -- for other components. (terrible name, any suggestions?)
         symbols = {
-          modified = '[+]',      -- Text to show when the file is modified.
-          readonly = '[-]',      -- Text to show when the file is non-modifiable or readonly.
+          modified = '[+]', -- Text to show when the file is modified.
+          readonly = '[-]', -- Text to show when the file is non-modifiable or readonly.
           unnamed = '[No Name]', -- Text to show for unnamed buffers.
-          newfile = '[New]',     -- Text to show for newly created file before first write
+          newfile = '[New]', -- Text to show for newly created file before first write
         },
       },
       {
@@ -230,12 +230,12 @@ require('which-key').setup({
 
   -- Document existing key chains
   spec = {
-    { '<leader>s',  group = '[S]earch' },
-    { '<leader>b',  group = '[B]uffers' },
-    { '<leader>f',  group = '[F]ind' },
-    { '<leader>s',  group = '[S]earch' },
-    { '<leader>u',  group = '[U]I' },
-    { '<leader>c',  group = '[C]ode' },
+    { '<leader>s', group = '[S]earch' },
+    { '<leader>b', group = '[B]uffers' },
+    { '<leader>f', group = '[F]ind' },
+    { '<leader>s', group = '[S]earch' },
+    { '<leader>u', group = '[U]I' },
+    { '<leader>c', group = '[C]ode' },
     { '<leader>gh', group = 'Git [H]unk', mode = { 'n', 'v' } },
   },
 })
@@ -254,7 +254,7 @@ require('window-picker').setup({
   },
 })
 
-require('statuscol').setup()
+require('statuscol').setup({})
 require('noice').setup({
   cmdline = {
     format = {

@@ -6,12 +6,12 @@ require('persistence').setup({
 require('mini.surround').setup({
 
   mappings = {
-    add = 'gsa',            -- Add surrounding in Normal and Visual modes
-    delete = 'gsd',         -- Delete surrounding
-    find = 'gsf',           -- Find surrounding (to the right)
-    find_left = 'gsF',      -- Find surrounding (to the left)
-    highlight = 'gsh',      -- Highlight surrounding
-    replace = 'gsr',        -- Replace surrounding
+    add = 'gsa', -- Add surrounding in Normal and Visual modes
+    delete = 'gsd', -- Delete surrounding
+    find = 'gsf', -- Find surrounding (to the right)
+    find_left = 'gsF', -- Find surrounding (to the left)
+    highlight = 'gsh', -- Highlight surrounding
+    replace = 'gsr', -- Replace surrounding
     update_n_lines = 'gsn', -- Update `n_lines`
   },
 })
@@ -75,13 +75,13 @@ local function customizeSelector(bufnr)
   end
 
   return require('ufo')
-      .getFolds(bufnr, 'lsp')
-      :catch(function(err)
-        return handleFallbackException(err, 'treesitter')
-      end)
-      :catch(function(err)
-        return handleFallbackException(err, 'indent')
-      end)
+    .getFolds(bufnr, 'lsp')
+    :catch(function(err)
+      return handleFallbackException(err, 'treesitter')
+    end)
+    :catch(function(err)
+      return handleFallbackException(err, 'indent')
+    end)
 end
 
 local ft_providers = {
@@ -96,7 +96,7 @@ local ft_providers = {
 }
 
 vim.o.foldcolumn = '1' -- '0' is not bad
-vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
 vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
@@ -176,5 +176,5 @@ require('sidekick').setup({
 })
 require('render-markdown').setup()
 require('grug-far').setup({
-  headerMaxWidth = 80
+  headerMaxWidth = 80,
 })

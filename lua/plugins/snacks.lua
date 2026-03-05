@@ -22,10 +22,10 @@ require('snacks').setup({
     },
   },
   notifier = {
-    enabled = false,
+    enabled = true,
   },
   quickfile = { enabled = true },
   scope = { enabled = true },
-  statuscolumn = { enabled = true },
+  statuscolumn = { enabled = false },
   words = { enabled = true },
 })
