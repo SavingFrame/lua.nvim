@@ -13,24 +13,24 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("PackChanged", {
-	desc = "execute plugin callbacks",
-	callback = function(event)
-		local data = event.data or {}
-		local kind = data.kind or ""
-		local callback = vim.tbl_get(data, "spec", "data", "on_" .. kind)
-
-		if type(callback) ~= "function" then
-			return
-		end
-
-		-- possible callbacks: on_install, on_update, on_delete
-		local ok, err = pcall(callback, data)
-		if not ok then
-			vim.notify(err, vim.log.levels.ERROR)
-		end
-	end,
-})
+-- vim.api.nvim_create_autocmd("PackChanged", {
+-- 	desc = "execute plugin callbacks",
+-- 	callback = function(event)
+-- 		local data = event.data or {}
+-- 		local kind = data.kind or ""
+-- 		local callback = vim.tbl_get(data, "spec", "data", "on_" .. kind)
+--
+-- 		if type(callback) ~= "function" then
+-- 			return
+-- 		end
+--
+-- 		-- possible callbacks: on_install, on_update, on_delete
+-- 		local ok, err = pcall(callback, data)
+-- 		if not ok then
+-- 			vim.notify(err, vim.log.levels.ERROR)
+-- 		end
+-- 	end,
+-- })
 
 -- Close certain filetypes with 'q'
 vim.api.nvim_create_autocmd("FileType", {

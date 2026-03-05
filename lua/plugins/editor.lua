@@ -175,3 +175,6 @@ require('sidekick').setup({
   },
 })
 require('render-markdown').setup()
+require('grug-far').setup({
+  headerMaxWidth = 80
+})

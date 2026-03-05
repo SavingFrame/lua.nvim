@@ -7,6 +7,7 @@ require('mason-lspconfig').setup({
     'ty',
     'docker_compose_language_service',
     'docker_language_server',
+    'gopls',
   },
 })
 require('lazydev').setup({
@@ -85,6 +86,7 @@ require('conform').setup({
     lua = { 'stylua' },
     python = { 'ruff_fix', 'ruff_format' },
     markdown = { 'markdownlint-cli2', 'markdown-toc' },
+    go = { 'goimports', 'gofumpt' },
     ['markdown.mdx'] = { 'markdownlint-cli2', 'markdown-toc' },
   },
 })
@@ -93,7 +95,7 @@ vim.diagnostic.config({
   update_in_insert = false,
   severity_sort = true,
   float = { border = 'rounded', source = 'if_many' },
-  virtual_text = true,   -- Text shows up at the end of the line
+  virtual_text = true, -- Text shows up at the end of the line
   virtual_lines = false, -- Teest shows up underneath the line, with virtual lines
   underline = { severity = vim.diagnostic.severity.ERROR },
   jump = { float = true },

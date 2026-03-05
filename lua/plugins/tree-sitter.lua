@@ -14,6 +14,9 @@ local languages = {
   'json',
   'bash',
   'go',
+  'gomod',
+  'gowork',
+  'gosum',
   'regex',
   'dockerfile',
   'markdown',
@@ -46,7 +49,9 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.treesitter.start(buf, language)
 
     -- replicate `indent = { enable = true }`
-    vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    if language ~= 'python' then
+      vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end
   end,
 })
 
@@ -64,7 +69,7 @@ require('nvim-treesitter-textobjects').setup({
     -- mapping query_strings to modes.
     selection_modes = {
       ['@parameter.outer'] = 'v', -- charwise
-      ['@function.outer'] = 'V',  -- linewise
+      ['@function.outer'] = 'V', -- linewise
       -- ['@class.outer'] = '<c-v>', -- blockwise
     },
     -- If you set this to `true` (default is `false`) then any textobject is

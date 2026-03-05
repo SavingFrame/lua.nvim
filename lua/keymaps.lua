@@ -326,3 +326,14 @@ end, { desc = 'Send File' })
 vim.keymap.set('n', '<leader>cf', function()
   require('conform').format({ async = true, lsp_format = 'fallback' })
 end, { desc = '[C]ode [F]ormat' })
+
+vim.keymap.set('n', '<leader>sr', function()
+  local grug = require 'grug-far'
+  local ext = vim.bo.buftype == '' and vim.fn.expand '%:e'
+  grug.open {
+    transient = true,
+    prefills = {
+      filesFilter = ext and ext ~= '' and '*.' .. ext or nil,
+    },
+  }
+end, { desc = '[S]earch and [R]eplace with grug' })
