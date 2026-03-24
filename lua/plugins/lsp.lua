@@ -97,6 +97,14 @@ vim.diagnostic.config({
   float = { border = 'rounded', source = 'if_many' },
   virtual_text = true, -- Text shows up at the end of the line
   virtual_lines = false, -- Teest shows up underneath the line, with virtual lines
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = '',
+    },
+  },
   underline = { severity = vim.diagnostic.severity.ERROR },
   jump = { float = true },
 })

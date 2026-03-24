@@ -1,9 +1,15 @@
 require('neotest').setup({
+  consumers = {
+    statusline_counter = function(client)
+      require('plugins.neotest-statusline').attach(client)
+      return {}
+    end,
+  },
   status = { virtual_text = true },
   output = { open_on_run = true },
   quickfix = {
     open = function()
-      require("trouble").open({ mode = "quickfix", focus = false })
+      require('trouble').open({ mode = 'quickfix', focus = false })
     end,
   },
   log_level = vim.log.levels.DEBUG,
@@ -17,7 +23,9 @@ require('neotest').setup({
       runner = 'pytest',
       python = '.venv/bin/python',
     }),
-    require('neotest-golang'),
+    require('neotest-golang')({
+      runner = 'gotestsum',
+    }),
   },
 })
 

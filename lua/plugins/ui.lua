@@ -84,54 +84,7 @@ require('neo-tree').setup({
   },
 })
 
-local function neotest_status()
-  local ok, neotest = pcall(require, 'neotest')
-  if not ok or not neotest.state then
-    return ''
-  end
-
-  local ok_config, config = pcall(require, 'neotest.config')
-  local icons = ok_config and config.icons or { running = '', failed = '', passed = '', skipped = '', test = '󰙨' }
-
-  local adapters = neotest.state.adapter_ids()
-  if not adapters or vim.tbl_isempty(adapters) then
-    return ''
-  end
-
-  local summary = { failed = 0, running = 0, passed = 0, skipped = 0, total = 0 }
-  local bufnr = vim.api.nvim_get_current_buf()
-  for _, adapter_id in ipairs(adapters) do
-    local counts = neotest.state.status_counts(adapter_id, { buffer = bufnr })
-    if counts then
-      for key, value in pairs(counts) do
-        summary[key] = (summary[key] or 0) + value
-      end
-    end
-  end
-
-  if summary.total == 0 then
-    return ''
-  end
-
-  local parts = {}
-  if summary.running > 0 then
-    table.insert(parts, icons.running .. ' ' .. summary.running)
-  end
-  if summary.failed > 0 then
-    table.insert(parts, icons.failed .. ' ' .. summary.failed)
-  end
-  if summary.passed > 0 then
-    table.insert(parts, icons.passed .. ' ' .. summary.passed)
-  end
-  if summary.skipped > 0 then
-    table.insert(parts, icons.skipped .. ' ' .. summary.skipped)
-  end
-  if vim.tbl_isempty(parts) then
-    return icons.test .. ' ' .. summary.total
-  end
-
-  return table.concat(parts, ' ')
-end
+local neotest_status = require('plugins.neotest-statusline').component
 
 require('lualine').setup({
   options = {
@@ -254,7 +207,60 @@ require('window-picker').setup({
   },
 })
 
-require('statuscol').setup({})
+local builtin = require('statuscol.builtin')
+require('statuscol').setup({
+  relculright = true,
+  ft_ignore = { 'neo-tree', 'neo-tree-popup', 'alpha', 'lazy', 'mason', 'dashboard' },
+  segments = {
+    {
+      sign = {
+        namespace = { 'gitsigns' },
+        name = { 'GitSigns.*' },
+        maxwidth = 1,
+        colwidth = 1,
+        auto = false,
+      },
+      click = 'v:lua.ScSa',
+    },
+    { text = { builtin.lnumfunc }, click = 'v:lua.ScLa' },
+    { text = { ' ' } },
+    {
+      sign = {
+        namespace = { 'diagnostic/signs' },
+        name = { 'DiagnosticSign.*' },
+        text = { '.*' },
+        maxwidth = 1,
+        colwidth = 1,
+        auto = false,
+      },
+      click = 'v:lua.ScSa',
+    },
+    {
+      sign = {
+        name = { 'neotest_.*' },
+        namespace = { 'neotest%-status' },
+        maxwidth = 1,
+        colwidth = 1,
+        auto = false,
+      },
+      click = 'v:lua.ScSa',
+    },
+    { text = { ' ' } },
+    { text = { builtin.foldfunc, ' ' }, click = 'v:lua.ScFa' },
+  },
+})
+
+local function disable_statuscol_cursorline_hl()
+  vim.api.nvim_set_hl(0, 'CursorLineNr', { link = 'LineNr' })
+  vim.api.nvim_set_hl(0, 'CursorLineSign', { link = 'SignColumn' })
+  vim.api.nvim_set_hl(0, 'CursorLineFold', { link = 'FoldColumn' })
+end
+
+disable_statuscol_cursorline_hl()
+vim.api.nvim_create_autocmd('ColorScheme', {
+  callback = disable_statuscol_cursorline_hl,
+})
+
 require('noice').setup({
   cmdline = {
     format = {
@@ -266,3 +272,5 @@ require('noice').setup({
     },
   },
 })
+
+require('nvim-navic').setup()

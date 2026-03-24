@@ -45,6 +45,7 @@ local plugins = {
   { source = 'https://github.com/bluz71/vim-moonfly-colors', name = 'moonfly' },
   { source = 'https://github.com/folke/noice.nvim' },
   { source = 'https://github.com/luukvbaal/statuscol.nvim' },
+  { source = 'https://github.com/SmiteshP/nvim-navic' },
 
   -- lsp/editor
   {
@@ -69,7 +70,7 @@ local plugins = {
   { source = 'https://github.com/mason-org/mason.nvim' },
   { source = 'https://github.com/stevearc/conform.nvim' },
   { source = 'https://github.com/fang2hou/blink-copilot' },
-  { source = 'https://github.com/SavingFrame/sidekick.nvim' },
+  { source = 'https://github.com/folke/sidekick.nvim' },
 
   { source = 'https://github.com/mason-org/mason-lspconfig.nvim' },
   { source = 'https://github.com/ranelpadon/python-copy-reference.vim' },
@@ -94,7 +95,17 @@ local plugins = {
   -- tests
   { source = 'https://github.com/nvim-neotest/nvim-nio' },
   { source = 'https://github.com/nvim-neotest/neotest-python' },
-  { source = 'https://github.com/fredrikaverpil/neotest-golang' },
+  {
+    source = 'https://github.com/fredrikaverpil/neotest-golang',
+    hooks = {
+      post_checkout = function()
+        vim.system({ 'go', 'install', 'gotest.tools/gotestsum@latest' }):wait() -- Optional, but recommended
+      end,
+      post_install = function()
+        vim.system({ 'go', 'install', 'gotest.tools/gotestsum@latest' }):wait() -- Optional, but recommended
+      end,
+    },
+  },
   { source = 'https://github.com/nvim-neotest/neotest' },
 }
 

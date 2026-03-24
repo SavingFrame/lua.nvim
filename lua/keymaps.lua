@@ -234,6 +234,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('grt', function()
       Snacks.picker.lsp_type_definitions()
     end, '[G]oto [T]ype Definition')
+    map('gst', function()
+      vim.lsp.buf.typehierarchy('subtypes')
+    end, '[G]oto [S]ub[t]ypes')
+    map('gsT', function()
+      vim.lsp.buf.typehierarchy('supertypes')
+    end, '[G]oto [S]uper [T]ypes')
     map('<leader>cd', function()
       vim.diagnostic.open_float(nil, { focusable = true })
     end, '[C]ode [D]iagnostic')
@@ -260,6 +266,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     --
     -- When you move your cursor, the highlights will be cleared (the second autocommand).
     local client = vim.lsp.get_client_by_id(event.data.client_id)
+    if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentSymbol, event.buf) then
+      require('nvim-navic').attach(client, event.buf)
+    end
+
     if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf) then
       local highlight_augroup = vim.api.nvim_create_augroup('kickstart-lsp-highlight', { clear = false })
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {

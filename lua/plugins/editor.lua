@@ -20,6 +20,8 @@ require('nvim-autopairs').setup()
 
 -- git signs
 require('gitsigns').setup({
+  signcolumn = true,
+  numhl = true,
   on_attach = function(bufnr)
     local gitsigns = require('gitsigns')
 
@@ -86,6 +88,7 @@ end
 
 local ft_providers = {
   vim = 'indent',
+  -- python = { 'lsp', 'treesitter' },
   python = { 'treesitter' },
   git = '',
   help = '',
