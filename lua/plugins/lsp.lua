@@ -8,6 +8,8 @@ require('mason-lspconfig').setup({
     'docker_compose_language_service',
     'docker_language_server',
     'gopls',
+    'tsgo',
+    'biome',
   },
 })
 require('lazydev').setup({
@@ -88,6 +90,10 @@ require('conform').setup({
     markdown = { 'markdownlint-cli2', 'markdown-toc' },
     go = { 'goimports', 'gofumpt' },
     ['markdown.mdx'] = { 'markdownlint-cli2', 'markdown-toc' },
+    javascript = { 'biome', 'biome-organize-imports' },
+    javascriptreact = { 'biome', 'biome-organize-imports' },
+    typescript = { 'biome', 'biome-organize-imports' },
+    typescriptreact = { 'biome', 'biome-organize-imports' },
   },
 })
 
