@@ -18,7 +18,7 @@ vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.guicursor =
-'n-v-c-sm:block-blinkwait700-blinkon400-blinkoff250,i-ci-ve:ver25-blinkwait700-blinkon400-blinkoff250,r-cr-o:hor20-blinkwait700-blinkon400-blinkoff250'
+  'n-v-c-sm:block-blinkwait700-blinkon400-blinkoff250,i-ci-ve:ver25-blinkwait700-blinkon400-blinkoff250,r-cr-o:hor20-blinkwait700-blinkon400-blinkoff250'
 -- Enable break indent
 vim.o.breakindent = true
 
@@ -61,3 +61,5 @@ vim.o.confirm = true
 
 -- For tree-sitter text objects and motions, don't create default keymaps
 vim.g.no_plugin_maps = true
+
+vim.o.autocomplete = false
