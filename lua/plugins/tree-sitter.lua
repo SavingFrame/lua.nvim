@@ -2,6 +2,11 @@ require('nvim-treesitter').setup({
   -- Directory to install parsers and queries to (prepended to `runtimepath` to have priority)
   install_dir = vim.fn.stdpath('data') .. '/site',
 })
+
+local ts_runtime = vim.fn.stdpath('data') .. '/site/pack/core/opt/nvim-treesitter/runtime'
+if vim.fn.isdirectory(ts_runtime) == 1 then
+  vim.opt.runtimepath:append(ts_runtime)
+end
 local languages = {
   'c',
   'lua',
