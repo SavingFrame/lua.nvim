@@ -16,7 +16,9 @@ require('mini.surround').setup({
   },
 })
 
-require('nvim-autopairs').setup()
+require('nvim-autopairs').setup({
+  disable_filetype = { 'TelescopePrompt', 'spectre_panel', 'snacks_picker_input', 'fff_input' },
+})
 
 -- git signs
 require('gitsigns').setup({
@@ -181,3 +183,7 @@ require('render-markdown').setup()
 require('grug-far').setup({
   headerMaxWidth = 80,
 })
+
+vim.g.fff = {
+  lazy_sync = true, -- start syncing only when the picker is open
+}

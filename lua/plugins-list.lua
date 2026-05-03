@@ -6,6 +6,10 @@ end
 local function build_blink(params)
   vim.notify('Building blink.cmp', vim.log.levels.INFO)
   local obj = vim.system({ 'cargo', 'build', '--release' }, { cwd = params.path }):wait()
+
+  -- local cmp = require('blink.cmp')
+  -- cmp.build():wait(60000)
+  -- cmp.setup()
   if obj.code == 0 then
     vim.notify('Building blink.cmp done', vim.log.levels.INFO)
   else
@@ -26,6 +30,8 @@ local function on_pack_changed(ev)
     build_blink({ path = ev.data.path })
   elseif name == 'neotest-golang' then
     vim.system({ 'go', 'install', 'gotest.tools/gotestsum@latest' }):wait()
+  elseif name == 'fff.nvim' then
+    require('fff.download').download_or_build_binary()
   end
 end
 
@@ -53,7 +59,7 @@ local plugins = {
   { src = gh('nvim-treesitter/nvim-treesitter-textobjects'), version = 'main' },
   gh('folke/lazydev.nvim'),
   gh('neovim/nvim-lspconfig'),
-  gh('saghen/blink.cmp'),
+  { src = gh('saghen/blink.cmp'), version = 'v1' },
   gh('mason-org/mason.nvim'),
   gh('stevearc/conform.nvim'),
   gh('fang2hou/blink-copilot'),
@@ -77,6 +83,7 @@ local plugins = {
   gh('MeanderingProgrammer/render-markdown.nvim'),
   gh('MagicDuck/grug-far.nvim'),
   gh('Vimjas/vim-python-pep8-indent'),
+  gh('dmtrKovalenko/fff.nvim'),
 
   -- tests
   gh('nvim-neotest/nvim-nio'),

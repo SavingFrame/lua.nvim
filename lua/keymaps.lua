@@ -71,9 +71,9 @@ vim.keymap.set('v', '>', '>gv', { desc = 'Indent right and reselect' })
 vim.keymap.set('n', '<leader>e', ':Neotree toggle reveal=true<CR>', { desc = 'Toggle NeoTree', silent = true })
 
 -- Top Pickers & Explorer (Snacks)
-vim.keymap.set('n', '<leader><space>', function()
-  Snacks.picker.smart()
-end, { desc = 'Smart find files' })
+-- vim.keymap.set('n', '<leader><space>', function()
+--   Snacks.picker.smart()
+-- end, { desc = 'Smart find files' })
 vim.keymap.set('n', '<leader>,', function()
   Snacks.picker.buffers()
 end, { desc = 'Buffers' })
@@ -117,9 +117,9 @@ vim.keymap.set('n', '<leader>gs', function()
 end, { desc = 'Git Status' })
 
 -- Grep
-vim.keymap.set('n', '<leader>sg', function()
-  Snacks.picker.grep()
-end, { desc = 'Grep' })
+-- vim.keymap.set('n', '<leader>sg', function()
+--   Snacks.picker.grep()
+-- end, { desc = 'Grep' })
 vim.keymap.set({ 'n', 'x' }, '<leader>sw', function()
   Snacks.picker.grep_word()
 end, { desc = 'Visual selection or word' })
@@ -351,3 +351,18 @@ end, { desc = '[S]earch and [R]eplace with grug' })
 -- trouble
 --
 vim.keymap.set('n', '<leader>ct', '<cmd>Trouble symbols toggle focus=false<cr>', { desc = '[C]ode [T]rouble (LSP Symbols)' })
+vim.keymap.set('n', '<leader><space>', function()
+  require('fff').find_files()
+end, { desc = 'FFF Find files' })
+
+vim.keymap.set('n', '<leader>sg', function()
+  require('fff').live_grep({
+    grep = {
+      modes = { 'fuzzy', 'plain' },
+    },
+  })
+end, { desc = 'FFF Live grep' })
+
+vim.keymap.set('n', '<leader>sG', function()
+  require('fff').live_grep()
+end, { desc = 'FFF Strict Live grep' })
