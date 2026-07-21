@@ -179,6 +179,32 @@ require('sidekick').setup({
     },
   },
 })
+
+local function set_copilot_enabled(enabled)
+  vim.g.copilot_enabled = enabled and 1 or 0
+  vim.g.sidekick_nes = enabled
+
+  local ok, nes = pcall(require, 'sidekick.nes')
+  if ok then
+    nes.enable(enabled)
+  end
+
+  vim.notify('Copilot ' .. (enabled and 'enabled' or 'disabled'))
+end
+
+vim.api.nvim_create_user_command('CopilotEnable', function()
+  set_copilot_enabled(true)
+end, { desc = 'Enable Copilot completions and Sidekick NES' })
+
+vim.api.nvim_create_user_command('CopilotDisable', function()
+  set_copilot_enabled(false)
+end, { desc = 'Disable Copilot completions and Sidekick NES' })
+
+vim.api.nvim_create_user_command('CopilotToggle', function()
+  local enabled = vim.g.copilot_enabled ~= 0 or vim.g.sidekick_nes ~= false
+  set_copilot_enabled(not enabled)
+end, { desc = 'Toggle Copilot completions and Sidekick NES' })
+
 require('render-markdown').setup()
 require('grug-far').setup({
   headerMaxWidth = 80,
@@ -187,3 +213,5 @@ require('grug-far').setup({
 vim.g.fff = {
   lazy_sync = true, -- start syncing only when the picker is open
 }
+
+require('pi_send').setup()

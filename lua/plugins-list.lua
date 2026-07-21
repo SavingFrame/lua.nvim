@@ -54,6 +54,8 @@ local plugins = {
   gh('luukvbaal/statuscol.nvim'),
   gh('SmiteshP/nvim-navic'),
 
+  gh('SavingFrame/pi-send.nvim'),
+
   -- lsp/editor
   { src = gh('nvim-treesitter/nvim-treesitter'), version = 'main' },
   { src = gh('nvim-treesitter/nvim-treesitter-textobjects'), version = 'main' },
@@ -66,6 +68,7 @@ local plugins = {
   gh('folke/sidekick.nvim'),
   gh('mason-org/mason-lspconfig.nvim'),
   gh('ranelpadon/python-copy-reference.vim'),
+  { src = 'https://github.com/mrcjkb/rustaceanvim', version = vim.version.range('^9') },
 
   -- editor
   gh('nvim-neo-tree/neo-tree.nvim'),
@@ -101,3 +104,4 @@ require('plugins.ui')
 require('plugins.editor')
 require('plugins.tests')
 require('plugins.dial')
+require('plugins.rust')

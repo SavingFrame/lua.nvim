@@ -27,5 +27,5 @@ require('snacks').setup({
   quickfile = { enabled = true },
   scope = { enabled = true },
   statuscolumn = { enabled = false },
-  words = { enabled = true },
+  words = { enabled = false },
 })

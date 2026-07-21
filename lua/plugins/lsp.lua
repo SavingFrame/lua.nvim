@@ -11,6 +11,9 @@ require('mason-lspconfig').setup({
     'tsgo',
     'biome',
   },
+  automatic_enable = {
+    exclude = { 'rust_analyzer' },
+  },
 })
 require('lazydev').setup({
   library = {

@@ -313,17 +313,17 @@ vim.keymap.set('n', '<C-y>', function() -- sidekick next edit suggestion
   end
 end, { desc = 'Select and Accept Next Edit Suggestion' })
 vim.keymap.set('n', '<leader>aa', function()
-  require('sidekick.cli').send({ msg = '{this}' })
-end, { desc = 'Send This' })
+  require('pi_send').send({ msg = '{this}' })
+end, { desc = 'Send This to Pi' })
 vim.keymap.set('x', '<leader>aa', function()
-  require('sidekick.cli').send({ msg = '{this}' })
-end, { desc = 'Send Visual Selection' })
+  require('pi_send').send({ msg = '{this}' })
+end, { desc = 'Send Visual Selection to Pi' })
 vim.keymap.set('x', '<leader>at', function()
-  require('sidekick.cli').send({ msg = '{selection}' })
-end, { desc = 'Send Visual Selection' })
+  require('pi_send').send({ msg = '{selection}' })
+end, { desc = 'Send Visual Selection to Pi' })
 vim.keymap.set('n', '<leader>af', function()
-  require('sidekick.cli').send({ msg = '{file}' })
-end, { desc = 'Send File' })
+  require('pi_send').send({ msg = '{file}' })
+end, { desc = 'Send File to Pi' })
 
 -- conform
 -- '<leader>cf',

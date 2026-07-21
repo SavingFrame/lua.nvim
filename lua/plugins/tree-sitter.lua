@@ -27,6 +27,8 @@ local languages = {
   'markdown',
   'latex',
   'yaml',
+  'svelte',
+  'ron',
 }
 -- replicate `ensure_installed`, runs asynchronously, skips existing languages
 require('nvim-treesitter').install(languages)
