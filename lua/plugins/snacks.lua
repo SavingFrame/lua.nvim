@@ -7,6 +7,13 @@ require('snacks').setup({
   },
   lazygit = {
     enabled = true,
+    config = {
+      os = {
+        edit = [[nvim --server "$NVIM" --remote-send "q"; nvim --server "$NVIM" --remote {{filename}}]],
+        editAtLine = [[nvim --server "$NVIM" --remote-send "q"; nvim --server "$NVIM" --remote {{filename}}; nvim --server "$NVIM" --remote-send ":{{line}}<CR>"]],
+        editInTerminal = false,
+      },
+    },
   },
   input = { enabled = true },
   picker = {

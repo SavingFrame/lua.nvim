@@ -1,17 +1,17 @@
-vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
-	callback = function()
-		vim.hl.on_yank()
-	end,
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  callback = function()
+    vim.hl.on_yank()
+  end,
 })
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-	pattern = "*",
-	callback = function(args)
-		require("conform").format({ bufnr = args.buf })
-	end,
-})
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+-- 	pattern = "*",
+-- 	callback = function(args)
+-- 		require("conform").format({ bufnr = args.buf })
+-- 	end,
+-- })
 
 -- vim.api.nvim_create_autocmd("PackChanged", {
 -- 	desc = "execute plugin callbacks",
@@ -33,35 +33,35 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 -- })
 
 -- Close certain filetypes with 'q'
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = {
-		"PlenaryTestPopup",
-		"checkhealth",
-		"dbout",
-		"gitsigns-blame",
-		"grug-far",
-		"help",
-		"lspinfo",
-		"neotest-output",
-		"neotest-output-panel",
-		"neotest-summary",
-		"notify",
-		"qf",
-		"spectre_panel",
-		"startuptime",
-		"tsplayground",
-	},
-	callback = function(event)
-		vim.bo[event.buf].buflisted = false
-		vim.schedule(function()
-			vim.keymap.set("n", "q", function()
-				vim.cmd("close")
-				pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
-			end, {
-				buffer = event.buf,
-				silent = true,
-				desc = "Quit buffer",
-			})
-		end)
-	end,
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = {
+    'PlenaryTestPopup',
+    'checkhealth',
+    'dbout',
+    'gitsigns-blame',
+    'grug-far',
+    'help',
+    'lspinfo',
+    'neotest-output',
+    'neotest-output-panel',
+    'neotest-summary',
+    'notify',
+    'qf',
+    'spectre_panel',
+    'startuptime',
+    'tsplayground',
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.schedule(function()
+      vim.keymap.set('n', 'q', function()
+        vim.cmd('close')
+        pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
+      end, {
+        buffer = event.buf,
+        silent = true,
+        desc = 'Quit buffer',
+      })
+    end)
+  end,
 })

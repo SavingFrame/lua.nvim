@@ -3,12 +3,12 @@ require('mason-lspconfig').setup({
   ensure_installed = {
     'lua_ls',
     'rust_analyzer',
-    'copilot',
+    -- 'copilot',
     'ty',
     'docker_compose_language_service',
     'docker_language_server',
     'gopls',
-    'tsgo',
+    'tsc',
     'biome',
   },
   automatic_enable = {
@@ -23,10 +23,10 @@ require('lazydev').setup({
   },
 })
 
-require('blink-copilot').setup({
-  debounce = 50,
-  max_completions = 2,
-})
+-- require('blink-copilot').setup({
+--   debounce = 50,
+--   max_completions = 2,
+-- })
 
 require('blink.cmp').setup({
   -- fuzzy = { implementation = 'prefer_rust_with_warning' },
@@ -48,26 +48,19 @@ require('blink.cmp').setup({
   },
 
   sources = {
-    default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer', 'copilot' },
+    default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
     providers = {
       lazydev = { module = 'lazydev.integrations.blink', score_offset = 100, name = 'LazyDev' },
-      copilot = {
-        name = 'copilot',
-        module = 'blink-copilot',
-        score_offset = 100,
-        async = true,
-      },
+      -- copilot = {
+      --   name = 'copilot',
+      --   module = 'blink-copilot',
+      --   score_offset = 100,
+      --   async = true,
+      -- },
     },
   },
   keymap = {
     preset = 'default',
-    ['<C-y>'] = {
-      function() -- sidekick next edit suggestion
-        return require('sidekick').nes_jump_or_apply()
-      end,
-      'select_and_accept',
-      'fallback',
-    },
   },
 })
 
@@ -104,8 +97,14 @@ vim.diagnostic.config({
   update_in_insert = false,
   severity_sort = true,
   float = { border = 'rounded', source = 'if_many' },
-  virtual_text = true, -- Text shows up at the end of the line
-  virtual_lines = false, -- Teest shows up underneath the line, with virtual lines
+  -- virtual_text = true, -- Text shows up at the end of the line
+  -- virtual_lines = false, -- Teest shows up underneath the line, with virtual lines
+  virtual_text = {
+    current_line = false,
+  },
+  virtual_lines = {
+    current_line = true,
+  },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = '',
@@ -154,4 +153,8 @@ vim.lsp.config('gopls', {
       semanticTokens = true,
     },
   },
+})
+
+vim.lsp.config('ty', {
+  root_markers = { 'uv.lock' },
 })

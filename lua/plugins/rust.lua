@@ -16,8 +16,7 @@ vim.g.rustaceanvim = {
     default_settings = {
       ['rust-analyzer'] = {
         cargo = {
-          allFeatures = true,
-          loadOutDirsFromCheck = true,
+          features = 'all',
           buildScripts = {
             enable = true,
           },

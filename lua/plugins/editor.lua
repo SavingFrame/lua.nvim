@@ -171,14 +171,14 @@ require('ufo').setup({
 
 require('trouble').setup()
 require('guess-indent').setup({})
-require('sidekick').setup({
-  cli = {
-    mux = {
-      backend = 'tmux',
-      enabled = true,
-    },
-  },
-})
+-- require('sidekick').setup({
+--   cli = {
+--     mux = {
+--       backend = 'tmux',
+--       enabled = true,
+--     },
+--   },
+-- })
 
 local function set_copilot_enabled(enabled)
   vim.g.copilot_enabled = enabled and 1 or 0
